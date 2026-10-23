@@ -23,11 +23,11 @@ const enquirySchema = new mongoose.Schema(
       trim: true,
     },
 
-    // Many enquiries can belong to one cat
+    // Enquiries can belong to a cat or be general enquiries
     cat: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Cat",
-      required: true,
+      required: false,
     },
 
     message: {
