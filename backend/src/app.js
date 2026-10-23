@@ -18,14 +18,17 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, Postman)
       if (!origin) return callback(null, true);
+
+      // Check configured origins, wildcard, non-production, or any Vercel domain
       if (
         allowedOrigins.includes("*") ||
         allowedOrigins.includes(origin) ||
-        env.nodeEnv !== "production"
+        env.nodeEnv !== "production" ||
+        /^https:\/\/([a-z0-9-]+)\.vercel\.app$/i.test(origin)
       ) {
         return callback(null, true);
       }
-      return callback(new Error(`Origin ${origin} not allowed by CORS`));
+      return callback(null, false);
     },
     credentials: true,
   })
