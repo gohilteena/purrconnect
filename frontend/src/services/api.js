@@ -1,8 +1,16 @@
 import axios from "axios";
 
-// One shared Axios instance so API logic is never duplicated
+// Automatically use the live Render API in production when running in cloud environments,
+// while preserving local development server defaults.
+const defaultBaseUrl =
+  typeof window !== "undefined" &&
+  window.location.hostname !== "localhost" &&
+  window.location.hostname !== "127.0.0.1"
+    ? "https://purrconnect-api.onrender.com/api"
+    : "http://localhost:5000/api";
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL || defaultBaseUrl,
 });
 
 // Attach Bearer token from localStorage on every outgoing request if available
